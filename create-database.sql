@@ -6,7 +6,7 @@ MAXSIZE = 15MB,
 FILEGROWTH = 10%)
 LOG ON (
 NAME = teste01_log,
-FILENAME = 'C:\boson-treinamentos-sql-databases\Bilioteca.ldf',
+FILENAME = 'C:\boson-treinamentos-sql-databases\Biblioteca.ldf',
 SIZE = 1MB,
 FILEGROWTH =1MB)
 GO
@@ -29,7 +29,7 @@ USE Biblioteca;
 EXEC sp_helpdb Biblioteca;
 
 -- EXCLUINDO O BANCO
-DROP DATABASE IF EXISTS teste01;
+DROP DATABASE IF EXISTS Biblioteca;
 
 -- EXCLUINDO BANCO EM USO
 USE MASTER
