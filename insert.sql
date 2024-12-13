@@ -38,16 +38,15 @@ VALUES('Vinte Mil Léguas Submarinas', '9788582850022','2014-09-16', 24.50, 448, 
 SELECT * FROM Livro;
 
 /*DELETE FROM Livro
-WHERE ISBN13 = 9788595080805;*/ -- TIVE QUE REINSERIR O A LINHA 3, AJUSTEI O TÍTULO DO LIVRO
+WHERE ISBN13 = 9788595080805;*/ -- TIVE QUE REINSERIR A LINHA 3, AJUSTEI O TÍTULO DO LIVRO
 
 SELECT NomeLivro, ISBN13, DtaPub, PrecoLivro, NumeroPaginas, IdEditora, IdAssunto
 FROM OPENROWSET(
-	BULK 'C:\Users\nadson.oliveira\Documents\estudos\boson-treinamentos-sql\Livros.csv',
-	FORMATFILE = 'C:\Users\nadson.oliveira\Documents\estudos\boson-treinamentos-sql\Formato.xml',
+	BULK 'C:\boson-treinamentos-sql\Livros.csv',
+	FORMATFILE = 'C:\boson-treinamentos-sql\Formato.xml',
 	CODEPAGE = '65001', -- UTF-8
 	FIRSTROW = 2
 ) AS LivrosCSV;
-
 
 -- DELETA LINHAS DA TABELA
 DELETE FROM Autor

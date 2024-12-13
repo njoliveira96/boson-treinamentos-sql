@@ -1,12 +1,12 @@
-CREATE DATABASE teste01 ON PRIMARY
-(NAME = teste01,
-FILENAME = 'C:\boson-treinamentos-sql-server\teste01.mdf',
+CREATE DATABASE Biblioteca ON PRIMARY
+(NAME = Biblioteca,
+FILENAME = 'C:\boson-treinamentos-sql-databases\Biblioteca.mdf',
 SIZE = 6MB,
 MAXSIZE = 15MB,
 FILEGROWTH = 10%)
 LOG ON (
 NAME = teste01_log,
-FILENAME = 'C:\boson-treinamentos-sql-server\teste01.ldf',
+FILENAME = 'C:\boson-treinamentos-sql-databases\Bilioteca.ldf',
 SIZE = 1MB,
 FILEGROWTH =1MB)
 GO
@@ -23,10 +23,10 @@ ORDER BY name;
 EXEC sp_databases;
 
 -- SELECIONANDO O BANCO
-USE teste01;
+USE Biblioteca;
 
 -- OBTER INFORMAÇÕES SOBRE UM BANCO ESPECÍFICO
-EXEC sp_helpdb teste01;
+EXEC sp_helpdb Biblioteca;
 
 -- EXCLUINDO O BANCO
 DROP DATABASE IF EXISTS teste01;
@@ -34,6 +34,6 @@ DROP DATABASE IF EXISTS teste01;
 -- EXCLUINDO BANCO EM USO
 USE MASTER
 GO
-ALTER DATABASE teste01
+ALTER DATABASE Biblioteca
 SET SINGLE_USER WITH ROLLBACK IMMEDIATE
-DROP DATABASE teste01;
+DROP DATABASE Biblioteca;
