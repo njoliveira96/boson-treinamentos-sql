@@ -49,6 +49,22 @@ FROM OPENROWSET(
 	FIRSTROW = 2
 ) AS LivrosCSV;
 
+INSERT INTO LivroAutor (IdLivro, IdAutor)
+VALUES
+(100,15),(
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- DELETA LINHAS DA TABELA
 DELETE FROM Livro
 WHERE IdLivro > 100;
@@ -58,3 +74,4 @@ UPDATE Assunto
 SET NomeAssunto = 'Ficcao Científica'
 WHERE IdAssunto = 1;
 
+ 
