@@ -13,7 +13,7 @@
     <ROW>
         <COLUMN SOURCE="1" NAME="NomeLivro" xsi:type="SQLVARYCHAR" />
         <COLUMN SOURCE="2" NAME="ISBN13" xsi:type="SQLVARYCHAR" />
-        <COLUMN SOURCE="3" NAME="DtaPub" xsi:type="SQLDATE" />
+        <COLUMN SOURCE="3" NAME="DataPub" xsi:type="SQLDATE" />
         <COLUMN SOURCE="4" NAME="PrecoLivro" xsi:type="SQLMONEY" />
         <COLUMN SOURCE="5" NAME="NumeroPaginas" xsi:type="SQLSMALLINT" />
         <COLUMN SOURCE="6" NAME="IdEditora" xsi:type="SQLSMALLINT" /> 
