@@ -9,17 +9,21 @@ SobrenomeAutor VARCHAR(60) NOT NULL,
 CONSTRAINT pk_id_autor PRIMARY KEY (IdAutor)
 );
 
-sp_help Livro;
+sp_help Autor;
 
 CREATE TABLE Editora(
 IdEditora SMALLINT PRIMARY KEY IDENTITY,
 NomeEditora VARCHAR(50) NOT NULL
 );
 
+sp_help Editora;
+
 CREATE TABLE Assunto(
 IdAssunto TINYINT PRIMARY KEY IDENTITY,
 NomeAssunto VARCHAR(25) NOT NULL
 );
+
+sp_help Assunto;
 
 CREATE TABLE Livro(
 IdLivro SMALLINT NOT NULL PRIMARY KEY IDENTITY (100,1),
@@ -35,6 +39,8 @@ CONSTRAINT fk_id_assunto FOREIGN KEY(IdAssunto) REFERENCES Assunto(IdAssunto) ON
 CONSTRAINT verifica_preco CHECK(PrecoLivro >=0)
 );
 
+sp_help Livro;
+
 CREATE TABLE LivroAutor(
 IdLivro SMALLINT NOT NULL,
 IdAutor SMALLINT NOT NULL,
@@ -42,6 +48,8 @@ CONSTRAINT fk_id_livros FOREIGN KEY(IdLivro) REFERENCES Livro(IdLivro),
 CONSTRAINT fk_id_autores FOREIGN KEY(IdAutor) REFERENCES Autor(IdAutor),
 CONSTRAINT pk_livro_autor PRIMARY KEY(IdLivro, IdAutor)
 );
+
+sp_help LivroAutor;
 
 -- PARA CONSULTAR AS TABELAS EXISTENTES NO BANCO QUE ESTÁ SENDO USADO
 
