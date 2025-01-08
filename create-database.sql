@@ -11,6 +11,19 @@ SIZE = 1MB,
 FILEGROWTH =1MB)
 GO
 
+CREATE DATABASE db_Biblioteca ON PRIMARY
+(NAME = db_Biblioteca,
+FILENAME = 'C:\boson-treinamentos-sql-databases\backup\db_Biblioteca.mdf',
+SIZE = 6MB,
+MAXSIZE = 15MB,
+FILEGROWTH = 10%)
+LOG ON (
+NAME = teste01_log,
+FILENAME = 'C:\boson-treinamentos-sql-databases\backup\db_Biblioteca.ldf',
+SIZE = 1MB,
+FILEGROWTH =1MB)
+GO
+
 -- CONSULTAR BANCOS EXISTENTES
 /*
 COMENTÁTRIO DE MÚLTIPLAS LINHAS

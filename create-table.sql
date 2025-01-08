@@ -1,6 +1,6 @@
 CREATE DATABASE Biblioteca;
 
-USE Biblioteca;
+USE db_Biblioteca;
 
 CREATE TABLE Autor(
 IdAutor SMALLINT IDENTITY,
@@ -51,6 +51,12 @@ CONSTRAINT pk_livro_autor PRIMARY KEY(IdLivro, IdAutor)
 
 sp_help LivroAutor;
 
+CREATE TABLE Teste(
+IdTeste SMALLINT PRIMARY KEY IDENTITY,
+ValorTeste SMALLINT NOT NULL);
+
+sp_help Teste;
+
 -- PARA CONSULTAR AS TABELAS EXISTENTES NO BANCO QUE ESTÁ SENDO USADO
 
 SELECT name FROM Biblioteca.sys.tables;
@@ -90,6 +96,3 @@ sp_rename 'Livro', 'tbl_livros';
 
 -- TRUNCATE TABLE: LIMPA A TABELA
 
-CREATE TABLE Teste(
-IdTeste SMALLINT PRIMARY KEY IDENTITY,
-ValorTeste SMALLINT NOT NULL);
