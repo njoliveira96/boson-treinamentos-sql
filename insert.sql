@@ -1,18 +1,18 @@
--- INSERINDO DADOS NAS TABELAS
+-- INSERT INTO NOME DA TABELA (CAMPO (S) DA TABELA) VALUES (VALORES) : INSERINDO DADOS NAS TABELAS
 
 INSERT INTO Assunto (NomeAssunto)
-VALUES
-('Ficcao Cientifica'), ('Botanica'),('Eletronica'),('Matematica'), ('Aventura'), ('Romance'), ('Financas'), 
+VALUES ('Ficcao Cientifica'), ('Botanica'),('Eletronica'),('Matematica'), ('Aventura'), ('Romance'), ('Financas'), 
 ('Gastronomia'), ('Terror'), ('Administracao'), ('Informatica'), ('Suspense');
 
 SELECT * FROM Assunto;
 
 INSERT INTO Editora (NomeEditora)
-VALUES
-('Prentice Hall'), ('O´Reilly'), ('Aleph'), ('Microsoft Press'), ('Wiley'), ('HarperCollins'), ('Erica'), ('Novatec'), ('McGraW-Hill'), ('Apress'), ('Francisco Alves'), ('Sybex'),  ('Globo'),
-('Companhia das letras'), ('Morro Branco'), ('Penguin Books'), ('Martin Claret'), ('Record'), ('Springer'), ('Melhoramentos'), ('Oxford'), ('Taschen'), ('Ediouro'), ('Bookman');
+VALUES ('Prentice Hall'), ('O´Reilly'), ('Aleph'), ('Microsoft Press'), ('Wiley'), ('HarperCollins'), ('Erica'), ('Novatec'), ('McGraW-Hill'), ('Apress'), ('Francisco Alves'), 
+('Sybex'),  ('Globo'), ('Companhia das letras'), ('Morro Branco'), ('Penguin Books'), ('Martin Claret'), ('Record'), ('Springer'), ('Melhoramentos'), ('Oxford'), ('Taschen'),
+('Ediouro'), ('Bookman');
 
-SELECT * FROM Editora;
+SELECT * FROM Editora
+ORDER BY IdEditora ASC;
 
 INSERT INTO Autor (NomeAutor, SobrenomeAutor)
 VALUES ('Umberto', 'Eco'), ('Daniel', 'Barret'), ('Gerald', 'Carter'), ('Mark', 'Sobell'), ('William', 'Stanek'), ('Christine', 'Bresnahan'), ('William', 'Gibson'), ('James', 'Joyce'), 
@@ -23,12 +23,11 @@ VALUES ('Umberto', 'Eco'), ('Daniel', 'Barret'), ('Gerald', 'Carter'), ('Mark', 
 
 SELECT * FROM Autor;
 
-INSERT INTO Livro (NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdAssunto, IdEditora)
-VALUES('A arte da eletronica', '9788582604342','20170308', 300.74, 1160, 3, 24);
+INSERT INTO Livro (NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdEditora, IdAssunto)
+VALUES ('A arte da eletronica', '9788582604342','20170308', 300.74, 1160, 24, 3), ('Vinte Mil Leguas Submarinas', '9788582850022','20140916', 24.50, 448, 16, 1),
+('O investidor inteligente','9788595080805', '20160125', 79.90, 450, 6, 7);
 
-INSERT INTO Livro (NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdAssunto, IdEditora)
-VALUES('Vinte Mil Leguas Submarinas', '9788582850022','20140916', 24.50, 448, 1, 16), -- Júlio Verne
-('O investidor inteligente','9788595080805', '20160125', 79.90, 450, 7, 6); -- Benjamin Graham
+-- INSERT COM IMPORTAÇÃO DE ARQUIVOS
 
 INSERT INTO Livro (NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdEditora, IdAssunto)
 SELECT NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdEditora, IdAssunto
@@ -42,37 +41,31 @@ FROM OPENROWSET(
 SELECT * FROM Livro;
 
 INSERT INTO LivroAutor (IdLivro, IdAutor)
-VALUES (101,15),(101,16),(103,27),(104,26),(105,41),(106,24),(107,32),(108,20),(109,27),(110,1),(111,22),(112,10),(113,21),(114,5),(115,10),(116,8),(117,18),(117,19),
-(118,31),(119,22);
+VALUES (100,15),(100,16),(101,27),(102,26),(103,41),(104,24),(105,32),(106,20),(107,27),(108,1),(109,22),(110,10),(111,21),(112,5),(113,10),(114,8),(115,18),(115,19),(116,31),
+(117,22);
 
 SELECT * FROM LivroAutor;
 
--- VERIFICAÇÃO COM INNER JOIN (JUNÇÃO DE TABELAS)
+-- ROTINA PARA INSERIR DADOS NA TABELA
 
-SELECT NomeLivro, NomeAutor, SobrenomeAutor
-FROM Livro
-INNER JOIN LivroAutor
-ON Livro.IdLivro = LivroAutor.IdLivro
-INNER JOIN Autor
-ON Autor.IdAutor = LivroAutor.IdAutor
-ORDER BY NomeLivro;
+DECLARE @Contador INT = 1
+WHILE @Contador <=100
+BEGIN 
+	INSERT INTO Teste (ValorTeste) VALUES (@Contador * 3)
+	SET @Contador = @Contador + 1
+END
 
+SELECT * FROM Teste;
 
+-- DELETE FROM NOME DA TABELA : DELETA TODAS AS LINHAS OU ALGUMAS LINHAS DA TABELA
 
-
-
-
-
-
-
-
-
-
--- DELETA LINHAS DA TABELA
 DELETE FROM Livro
 WHERE IdLivro > 100;
 
--- ATUALIZA LINHAS DA TABELA 
-UPDATE Assunto
-SET NomeAssunto = 'Ficcao Científica'
-WHERE IdAssunto = 1;
+-- TRUNCATE TABLE NOME DA TABELA: LIMPA DADOS DA TABELA, RESETA O VALOR DO IDENTITY
+
+TRUNCATE TABLE Teste;
+
+-- ELECT IDENT_CURRENT ('NOME DA TABELA'): RETORNA O VALOR ATUAL DO IDENTITY
+
+SELECT IDENT_CURRENT ('Teste');
