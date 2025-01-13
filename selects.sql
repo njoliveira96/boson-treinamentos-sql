@@ -5,7 +5,7 @@ SELECT COLUNAS OU * (TUDO) FROM TABELA;
 SELECT NomeLivro, PrecoLivro
 FROM Livro;
 
--- SLECT INTO: CRIA UMA TABELA COM DADOS DE OUTRA TABELA
+-- SELECT INTO: CRIA UMA TABELA COM DADOS DE OUTRA TABELA
 /*
 SELECT COLUNAS
 INTO NOVA_TABELA
@@ -171,9 +171,13 @@ SELECT NomeAssunto AS Nome, 'Assunto' AS Tipo FROM Assunto
 UNION
 SELECT NomeLivro AS Nome, 'Livro' AS Tipo FROM Livro;
 
--- FUNÇÕES DE AGREGAÇÃO: MIN, MAX, AVG, SUM, COUNT
-
-SELECT COUNT (*) Total_autores
+/* FUNÇÕES DE AGREGAÇÃO: MIN, MAX, AVG, SUM, COUNT
+-- COUNT: RETORNA A QUANTIDADE DE REGISTROS NA TABELA INFORMADA
+-- MAX: RETORNA O VALOR MAIOR 
+-- MIN: RETORNA O MENOR VALOR
+-- AVG: RETORNA A MÉDIA DE UM CONJUNTO DE VALORES
+*/
+SELECT COUNT (*) Total_de_registros_ou_linhas_na_tabela_autores
 FROM Autor;
 
 SELECT MAX (PrecoLivro) 'Valor do livro mais caro'
@@ -208,7 +212,7 @@ WHERE PrecoLivro = (
 /*
 % = QUALQUER CADEIA DE 0 OU MAIS CARACTERES
 _ = QUALQUER CARACTERE ÚNICO
-[] = CARACTERES ÚNICOS NÃO NO INTERVALO OU CONJUNTO ESPECIFICADO
+[] = CARACTERES ÚNICOS NO INTERVALO OU CONJUNTO ESPECIFICADO
 [^] = CARACTERES ÚNICOS NÃO NO INTERVALO OU CONJUNTO ESPECIFICADO
 */
 -- RETORNA OS LIVROS QUE COMEÇAM COM A LETRA F
@@ -286,7 +290,7 @@ ON Livro.IdAssunto = Assunto.IdAssunto;
 
 --  INNER JOIN COM ALIAS
 
-SELECT NomeLivro AS 'Nomes dos livros', NomeEditora AS 'Nomes das editoras'
+SELECT L.NomeLivro AS 'Nomes dos livros', E.NomeEditora AS 'Nomes das editoras'
 FROM Livro AS L INNER JOIN Editora AS E ON L.IdEditora = E.IdEditora
 WHERE E.NomeEditora LIKE '[MH]%'
 ORDER BY L.NomeLivro;
@@ -395,9 +399,7 @@ FROM Livro
 CROSS JOIN Assunto;
 
 /*
-
-VIEW
-
+VIEW: SIMPLIFICA CONSULTAS COMPLEXAS, SEGURANÇA, ABSTRAÇÃO, AGREGAÇÃO E SUMARIZAÇÃO DE DADOS
 */
 -- CRIA A VIEW
 
@@ -406,11 +408,69 @@ SELECT TOP 5 NomeLivro, PrecoLivro
 FROM Livro
 ORDER BY PrecoLivro;
 
+-- OU
+
+IF OBJECT_ID ('vwLivroAssunto', 'view') IS NOT NULL
+	DROP VIEW vwLivroAssunto;
+GO
+CREATE VIEW vwLivroAssunto AS
+	SELECT L.NomeLivro AS Livro, A.NomeAssunto AS Assunto
+	FROM Livro AS L
+	INNER JOIN Assunto AS A ON L.IdAssunto = A.IdAssunto;
+GO
+
 -- EXIBE A VIEW
 
 SELECT * FROM vwLivroPreco;
+SELECT Livro, Assunto FROM vwLivroAssunto;
 
 -- EXIBE O CÓDIGO DA VIEW
 
 EXEC sp_helptext vwLivroPreco;
 
+-- ALTERANDO A VIEW
+
+ALTER VIEW vwLivroPreco AS
+	SELECT L.NomeLivro AS Livro, L.ISBN13, A.NomeAssunto AS Assunto
+	FROM Livro AS L
+	INNER JOIN Assunto AS A ON L.IdAssunto = A.IdAssunto;
+
+SELECT * FROM vwLivroAssunto;
+
+-- EXCLUINDO UMA VIEW
+
+DROP VIEW vwLivroPreco;
+
+/*
+SUBCONSULTAS
+*/
+-- EXEMPLO 1
+
+SELECT NomeLivro, IdEditora
+FROM Livro 
+WHERE IdEditora = (
+	SELECT IdEditora
+	FROM Editora
+	WHERE NomeEditora = 'Aleph'
+)
+ORDER BY NomeLivro;
+
+-- EXEMPLO 2
+
+SELECT NomeEditora
+FROM Editora
+WHERE IdEditora IN (SELECT IdEditora FROM Livro	WHERE IdAssunto IN (1,3,7))
+ORDER BY NomeEditora;
+
+-- EXEMPLO 3
+
+SELECT L.NomeLivro, L.PrecoLivro
+FROM Livro AS L, (SELECT AVG(PrecoLivro) AS MediaPreco FROM Livro) AS Subconsulta
+WHERE L.PrecoLivro > Subconsulta.MediaPreco;
+
+-- EXEMPLO 4
+
+SELECT NomeEditora
+FROM Editora
+WHERE IdEditora IN (SELECT IdEditora FROM Livro WHERE IdAssunto = (SELECT IdAssunto FROM Assunto WHERE NomeAssunto = 'Ficcao Cientifica'))
+ORDER BY NomeEditora;
