@@ -3,20 +3,35 @@ STORED PROCEDURE (SP): LOTES (BATCHES) DE DECLARAÇÕES SQL EXECUTADAS COMO UMA SU
 FACILITANDO A MANUTENÇÃO E A OTIMIZAÇÃO DE CÓDIGO, USADO PARA VALIDAÇÃO DE DADOS, CONTROLE DE ACESSO, EXECUÇÃO DE DECLARAÇÕES SQL COMPLEXAS E OUTRAS SITUAÇÕES
 É POSSÍVEL AJUSTAR PERMISSÕES DE ACESSO AOS USUÁRIOS DEFININDO QUEM PODE OU NÃO EXECUTÁ-LAS
 */
--- EXEMPLO 1
-CREATE PROCEDURE sp_LivroValor
+-- CRIANDO OU ALTERANDO A PROCEDURE
+
+CREATE OR ALTER PROCEDURE sp_teste
+AS
+BEGIN
+	SELECT 'Boson Treinamentos' AS Nome;
+END
+GO
+
+EXEC sp_teste;
+
+CREATE OR ALTER PROCEDURE sp_teste (@p1 AS INT)
+AS
+BEGIN
+	SELECT CONCAT ('Valor: ', @p1) AS Valor;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_LivroValor
 AS
 BEGIN
 	SELECT NomeLivro AS Título, PrecoLivro AS Valor
 	FROM Livro;
 END
-GO
+GO 
 
 EXEC sp_LivroValor;
 
--- ALTERANDO O PROCEDIMENTO
-
-ALTER PROCEDURE sp_LivroValor
+CREATE OR ALTER PROCEDURE sp_LivroValor
 AS
 BEGIN
 	SELECT NomeLivro AS Título, PrecoLivro Valor
@@ -24,6 +39,8 @@ BEGIN
 	WHERE PrecoLivro >= 150.00;
 END
 GO
+
+EXEC sp_LivroValor;
 
 -- RETORNA O CÓDIGO SQL DA SP
 
@@ -45,7 +62,18 @@ EXEC sp_LivroISBN;
 
 -- ALTERANDO PROCEDIMENTO USANDO VARIÁVEIS
 
-ALTER PROCEDURE sp_LivroValor (@ID SMALLINT)
+CREATE OR ALTER PROCEDURE sp_teste (@p1 AS INT)
+AS
+BEGIN
+	SELECT CONCAT ('Valor: ', @p1) AS Valor;
+END
+GO
+
+EXEC sp_teste 63;
+
+-- OUTRO EXEMPLO
+
+CREATE OR ALTER PROCEDURE sp_LivroValor (@ID SMALLINT)
 AS
 BEGIN
 	SELECT NomeLivro AS Título, PrecoLivro AS Valor
@@ -53,11 +81,25 @@ BEGIN
 	WHERE IdLivro = @ID;
 END
 GO
+
 EXEC sp_LivroValor 104;
 
 -- OUTRO EXEMPLO
 
-ALTER PROCEDURE sp_LivroValor (@ID SMALLINT, @Qtde SMALLINT)
+CREATE OR ALTER PROCEDURE sp_teste (@p1 AS INT, @p2 AS VARCHAR(20))
+AS
+BEGIN
+	SELECT @p1 'Parâmetro 01', @p2 AS 'Parâmetro 02';
+END
+GO 
+
+EXEC sp_teste 55, 'Laranja';
+-- OUdd
+EXEC sp_teste @p2 = 'Laranja', @p1 = 55;
+
+-- OUTRO EXEMPLO
+
+CREATE OR ALTER PROCEDURE sp_LivroValor (@ID SMALLINT, @Qtde SMALLINT)
 AS
 BEGIN
 	SELECT NomeLivro AS Título, @QTde AS Quantidade, PrecoLivro * @Qtde 'Valor total'
@@ -65,5 +107,25 @@ BEGIN
 	WHERE IdLivro = @ID;
 END
 GO
+
 EXEC sp_LivroValor 104, 5;
 
+-- OUTRO EXEMPLO
+
+CREATE OR ALTER PROCEDURE sp_cadastra_editora (@nome VARCHAR(50))
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO Editora (NomeEditora) VALUES (@nome);
+END
+GO
+
+EXEC sp_cadastra_editora 'Círculo do Livro';
+EXEC sp_cadastra_editora 'Makron Books';
+
+SELECT * FROM Editora;
+
+-- DELETANDO UMA PROCEDURE
+
+DROP PROCEDURE sp_LivroValor;
+SELECT * FROM Editora;
